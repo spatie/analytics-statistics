@@ -11,7 +11,7 @@ use Google_Client;
 class Analytics
 {
     /**
-     * @var \Spatia\Analytics\GoogleClient
+     * @var \Spatie\Analytics\GoogleClient
      */
     protected $client;
 

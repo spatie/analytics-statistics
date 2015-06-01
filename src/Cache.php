@@ -1,5 +1,7 @@
 <?php
 
+namespace Spatie\Analytics;
+
 interface Cache
 {
     /**
