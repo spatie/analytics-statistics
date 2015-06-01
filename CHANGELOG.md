@@ -1,20 +1,7 @@
 # Changelog
 
-All Notable changes to `:package_name` will be documented in this file
+All Notable changes to `spatie/analytics-statistics` will be documented in this file
 
-## NEXT - YYYY-MM-DD
+## v1.0 2015-06-01
 
-### Added
-- Nothing
-
-### Deprecated
-- Nothing
-
-### Fixed
-- Nothing
-
-### Removed
-- Nothing
-
-### Security
-- Nothing
+First release!
