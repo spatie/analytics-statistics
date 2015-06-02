@@ -239,7 +239,7 @@ class Analytics
 
             $browserCollection[] = array(
                 'browser' => 'other',
-                'sessions' => $sessions
+                'sessions' => array_sum($sessions)
             );
         }
 
