@@ -232,11 +232,14 @@ class Analytics
 
         if (count($browserData) > $maxResults) {
             $otherBrowsers = array_slice($browserData, $maxResults - 1);
-            $otherBrowsersCount = array_sum(array_pluck($otherBrowsers, 'sessions', null));
+
+            $sessions = array_map(function ($browser) {
+                return $browser['sessions'];
+            }, $otherBrowsers);
 
             $browserCollection[] = array(
                 'browser' => 'other',
-                'sessions' => $otherBrowsersCount
+                'sessions' => $sessions
             );
         }
 
