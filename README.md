@@ -10,6 +10,8 @@ An opinionated package to retrieve Google Analytics data. Compatible with PHP >=
 
 If you're using laravel 5, check out our [laravel-analytics](https://github.com/spatie/laravel-analytics/) package!
 
+Spatie is webdesign agency in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
+
 ## Install
 
 This package can be installed through Composer.
@@ -289,6 +291,9 @@ If you discover any security related issues, please email freek@spatie.be instea
 - [Matthias De Winter](https://github.com/MatthiasDeWinter)
 - [Sebastian De Deyne](https://github.com/sebastiandedeyne)
 - [All Contributors](../../contributors)
+
+## About Spatie
+Spatie is webdesign agency in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
 
 ## License
 
