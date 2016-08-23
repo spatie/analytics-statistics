@@ -30,10 +30,10 @@ class GoogleClient
     protected $realTimeCacheLifeTimeInSeconds;
 
     /**
-     * @param  Google_Client $client
-     * @param  \Spatie\Analytics\Cache $cache
-     * @param  int $cacheLifeTimeInMinutes
-     * @param  int $realTimeCacheLifeTimeInSeconds
+     * @param Google_Client           $client
+     * @param \Spatie\Analytics\Cache $cache
+     * @param int                     $cacheLifeTimeInMinutes
+     * @param int                     $realTimeCacheLifeTimeInSeconds
      */
     public function __construct(
         Google_Client $client,
@@ -51,14 +51,15 @@ class GoogleClient
     /**
      * Query the Google Analytics Service with given parameters.
      *
-     * @param  int    $id
-     * @param  string $startDate
-     * @param  string $endDate
-     * @param  string $metrics
-     * @param  array  $others
+     * @param int    $id
+     * @param string $startDate
+     * @param string $endDate
+     * @param string $metrics
+     * @param array  $others
+     *
      * @return mixed
      */
-    public function performQuery($id, $startDate, $endDate, $metrics, array $others = array())
+    public function performQuery($id, $startDate, $endDate, $metrics, array $others = [])
     {
         $cacheName = $this->determineCacheName(func_get_args());
 
@@ -74,16 +75,17 @@ class GoogleClient
 
         return $googleAnswer;
     }
-    
+
     /**
      * Query the Google Analytics Real Time Reporting Service with given parameters.
      *
-     * @param  int    $id
-     * @param  string $metrics
-     * @param  array  $others
+     * @param int    $id
+     * @param string $metrics
+     * @param array  $others
+     *
      * @return mixed
      */
-    public function performRealTimeQuery($id, $metrics, array $others = array())
+    public function performRealTimeQuery($id, $metrics, array $others = [])
     {
         $realTimeCacheName = $this->determineRealTimeCacheName(func_get_args());
 
@@ -91,7 +93,7 @@ class GoogleClient
             return $this->cache->get($realTimeCacheName);
         }
 
-        $googleAnswer =  $this->service->data_realtime->get($id, $metrics, $others);
+        $googleAnswer = $this->service->data_realtime->get($id, $metrics, $others);
 
         if ($this->useRealTimeCache()) {
             $this->cache->put(
@@ -107,9 +109,11 @@ class GoogleClient
     /**
      * Get a site Id by its URL.
      *
-     * @param  string $url
-     * @return mixed
+     * @param string $url
+     *
      * @throws \Exception
+     *
+     * @return mixed
      */
     public function getSiteIdByUrl($url)
     {
@@ -131,11 +135,11 @@ class GoogleClient
     {
         static $siteIds = null;
 
-        if (! is_null($siteIds)) {
+        if (!is_null($siteIds)) {
             return $siteIds;
         }
 
-        foreach ($this->service->management_profiles->listManagementProfiles("~all", "~all") as $site) {
+        foreach ($this->service->management_profiles->listManagementProfiles('~all', '~all') as $site) {
             $siteIds[$site['websiteUrl']] = 'ga:'.$site['id'];
         }
 
@@ -145,7 +149,8 @@ class GoogleClient
     /**
      * Determine the cache name for the set of query properties given.
      *
-     * @param  array $properties
+     * @param array $properties
+     *
      * @return string
      */
     protected function determineCacheName(array $properties)
@@ -166,7 +171,8 @@ class GoogleClient
     /**
      * Set the cache time.
      *
-     * @param  int $cacheLifeTimeInMinutes
+     * @param int $cacheLifeTimeInMinutes
+     *
      * @return self
      */
     public function setCacheLifeTimeInMinutes($cacheLifeTimeInMinutes)
@@ -179,7 +185,8 @@ class GoogleClient
     /**
      * Determine the cache name for RealTime function calls for the set of query properties given.
      *
-     * @param  array $properties
+     * @param array $properties
+     *
      * @return string
      */
     protected function determineRealTimeCacheName(array $properties)
@@ -200,7 +207,8 @@ class GoogleClient
     /**
      * Set the cache time.
      *
-     * @param  int $realTimeCacheLifeTimeInSeconds
+     * @param int $realTimeCacheLifeTimeInSeconds
+     *
      * @return self
      */
     public function setRealTimeCacheLifeTimeInMinutes($realTimeCacheLifeTimeInSeconds)
