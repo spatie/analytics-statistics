@@ -9,7 +9,7 @@ use Spatie\Analytics\Analytics;
 class AnalyticsTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Mockery\MockInterface  Mock of \Spatie\Analytics\GoogleClient
+     * @var \Mockery\MockInterface Mock of \Spatie\Analytics\GoogleClient
      */
     protected $client;
 
@@ -32,7 +32,7 @@ class AnalyticsTest extends \PHPUnit_Framework_TestCase
     {
         $this->client = Mockery::mock('\Spatie\Analytics\GoogleClient');
         $this->siteId = '12345';
-        $this->now = new DateTime;
+        $this->now = new DateTime();
 
         $this->analytics = new Analytics($this->client, $this->siteId);
     }
@@ -44,16 +44,16 @@ class AnalyticsTest extends \PHPUnit_Framework_TestCase
 
         $this->client
             ->shouldReceive('performQuery')
-            ->with($this->siteId, $startDate, $endDate, "ga:visits,ga:pageviews",
-                array(
-                    'dimensions' => 'ga:date'
-                )
+            ->with($this->siteId, $startDate, $endDate, 'ga:visits,ga:pageviews',
+                [
+                    'dimensions' => 'ga:date',
+                ]
             )
-            ->andReturn((object) array('rows' => array(array('20140101', 2, 3))));
+            ->andReturn((object) ['rows' => [['20140101', 2, 3]]]);
 
         $googleResult = $this->analytics->getVisitorsAndPageViews();
 
-        $resultProperties = array('date', 'visitors', 'pageViews');
+        $resultProperties = ['date', 'visitors', 'pageViews'];
 
         $this->assertTrue(count($googleResult) === 1);
 
@@ -69,19 +69,19 @@ class AnalyticsTest extends \PHPUnit_Framework_TestCase
 
         $this->client
             ->shouldReceive('performQuery')
-            ->with($this->siteId, $startDate, $endDate, "ga:sessions",
-                array(
-                    'dimensions' => 'ga:keyword',
-                    'sort' => '-ga:sessions',
+            ->with($this->siteId, $startDate, $endDate, 'ga:sessions',
+                [
+                    'dimensions'  => 'ga:keyword',
+                    'sort'        => '-ga:sessions',
                     'max-results' => 30,
-                    'filters' => 'ga:keyword!=(not set);ga:keyword!=(not provided)'
-                )
+                    'filters'     => 'ga:keyword!=(not set);ga:keyword!=(not provided)',
+                ]
             )
-            ->andReturn((object) array('rows' => array(array('first', 'second'))));
+            ->andReturn((object) ['rows' => [['first', 'second']]]);
 
         $googleResult = $this->analytics->getTopKeyWords();
 
-        $this->assertEquals($googleResult, array(array('keyword' => 'first', 'sessions' => 'second')));
+        $this->assertEquals($googleResult, [['keyword' => 'first', 'sessions' => 'second']]);
     }
 
     public function testGetTopReferrers()
@@ -91,18 +91,18 @@ class AnalyticsTest extends \PHPUnit_Framework_TestCase
 
         $this->client
             ->shouldReceive('performQuery')
-            ->with($this->siteId, $startDate, $endDate, "ga:pageviews",
-                array(
-                    'dimensions' => 'ga:fullReferrer',
-                    'sort' => '-ga:pageviews',
-                    'max-results' => 20
-                )
+            ->with($this->siteId, $startDate, $endDate, 'ga:pageviews',
+                [
+                    'dimensions'  => 'ga:fullReferrer',
+                    'sort'        => '-ga:pageviews',
+                    'max-results' => 20,
+                ]
             )
-            ->andReturn((object) array('rows' => array(array('foundUrl', '123'))));
+            ->andReturn((object) ['rows' => [['foundUrl', '123']]]);
 
         $googleResult = $this->analytics->getTopReferrers();
 
-        $this->assertEquals($googleResult, array(array('url' => 'foundUrl', 'pageViews' => '123')));
+        $this->assertEquals($googleResult, [['url' => 'foundUrl', 'pageViews' => '123']]);
     }
 
     public function testGetTopBrowsers()
@@ -112,17 +112,17 @@ class AnalyticsTest extends \PHPUnit_Framework_TestCase
 
         $this->client
             ->shouldReceive('performQuery')
-            ->with($this->siteId, $startDate, $endDate, "ga:sessions",
-                array(
+            ->with($this->siteId, $startDate, $endDate, 'ga:sessions',
+                [
                     'dimensions' => 'ga:browser',
-                    'sort' => '-ga:sessions'
-                )
+                    'sort'       => '-ga:sessions',
+                ]
             )
-            ->andReturn((object) array('rows' => array(array('Google Chrome', '123'))));
+            ->andReturn((object) ['rows' => [['Google Chrome', '123']]]);
 
         $googleResult = $this->analytics->getTopBrowsers();
 
-        $this->assertEquals($googleResult, array(array('browser' => 'Google Chrome', 'sessions' => '123')));
+        $this->assertEquals($googleResult, [['browser' => 'Google Chrome', 'sessions' => '123']]);
     }
 
     public function testGetMostVisitedPages()
@@ -132,18 +132,18 @@ class AnalyticsTest extends \PHPUnit_Framework_TestCase
 
         $this->client
             ->shouldReceive('performQuery')
-            ->with($this->siteId, $startDate, $endDate, "ga:pageviews",
-                array(
-                    'dimensions' => 'ga:pagePath',
-                    'sort' => '-ga:pageviews',
-                    'max-results' => 20
-                )
+            ->with($this->siteId, $startDate, $endDate, 'ga:pageviews',
+                [
+                    'dimensions'  => 'ga:pagePath',
+                    'sort'        => '-ga:pageviews',
+                    'max-results' => 20,
+                ]
             )
-            ->andReturn((object) array('rows' => array(array('visited url', '123'))));
+            ->andReturn((object) ['rows' => [['visited url', '123']]]);
 
         $googleResult = $this->analytics->getMostVisitedPages();
 
-        $this->assertEquals($googleResult, array(array('url' => 'visited url', 'pageViews' => '123')));
+        $this->assertEquals($googleResult, [['url' => 'visited url', 'pageViews' => '123']]);
     }
 
     public function testGetSiteIdByUrl()
@@ -163,7 +163,7 @@ class AnalyticsTest extends \PHPUnit_Framework_TestCase
         $startDate = $this->now->modify('-1 year');
         $endDate = new DateTime();
         $metrics = 'ga:somedummymetric';
-        $others = array('first', 'second');
+        $others = ['first', 'second'];
 
         $queryResult = 'result';
 
@@ -185,11 +185,11 @@ class AnalyticsTest extends \PHPUnit_Framework_TestCase
         $disabledAnalytics = new Analytics($this->client);
         $this->assertFalse($disabledAnalytics->isEnabled());
     }
-    
+
     public function testPerformRealTimeQuery()
     {
         $metrics = 'rt:somedummymetric';
-        $others = array('first', 'second');
+        $others = ['first', 'second'];
 
         $queryResult = 'result';
 
@@ -205,16 +205,16 @@ class AnalyticsTest extends \PHPUnit_Framework_TestCase
 
     public function testGetActiveUsers()
     {
-        $others = array('first', 'second');
+        $others = ['first', 'second'];
         $metrics = 'rt:activeUsers';
 
         $this->client
                 ->shouldReceive('performRealTimeQuery')
                 ->with($this->siteId, $metrics, $others)
-                ->andReturn((object) array('rows' => array(array(0, '500'))));
+                ->andReturn((object) ['rows' => [[0, '500']]]);
 
-            $googleResult = $this->analytics->getActiveUsers($others);
+        $googleResult = $this->analytics->getActiveUsers($others);
 
-            $this->assertInternalType('int', $googleResult);
+        $this->assertInternalType('int', $googleResult);
     }
 }

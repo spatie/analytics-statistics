@@ -21,8 +21,8 @@ class Analytics
     protected $siteId;
 
     /**
-     * @param  \Spatie\Analytics\GoogleClient $client
-     * @param  string $siteId
+     * @param \Spatie\Analytics\GoogleClient $client
+     * @param string                         $siteId
      */
     public function __construct(GoogleClient $client, $siteId = '')
     {
@@ -33,8 +33,9 @@ class Analytics
     /**
      * Get the amount of visitors and pageViews.
      *
-     * @param  int $numberOfDays
-     * @param  string $groupBy  Possible values: date, yearMonth
+     * @param int    $numberOfDays
+     * @param string $groupBy      Possible values: date, yearMonth
+     *
      * @return array
      */
     public function getVisitorsAndPageViews($numberOfDays = 365, $groupBy = 'date')
@@ -47,9 +48,10 @@ class Analytics
     /**
      * Get the amount of visitors and pageviews for the given period.
      *
-     * @param  \DateTime $startDate
-     * @param  \DateTime $endDate
-     * @param  string $groupBy  Possible values: date, yearMonth
+     * @param \DateTime $startDate
+     * @param \DateTime $endDate
+     * @param string    $groupBy   Possible values: date, yearMonth
+     *
      * @return array
      */
     public function getVisitorsAndPageViewsForPeriod(DateTime $startDate, DateTime $endDate, $groupBy = 'date')
@@ -58,21 +60,21 @@ class Analytics
             $startDate,
             $endDate,
             'ga:visits,ga:pageviews',
-            array('dimensions' => 'ga:'.$groupBy)
+            ['dimensions' => 'ga:'.$groupBy]
         );
 
         if (is_null($answer->rows)) {
-            return array();
+            return [];
         }
 
-        $visitorData = array();
+        $visitorData = [];
 
         foreach ($answer->rows as $dateRow) {
-            $visitorData[] = array(
+            $visitorData[] = [
                 $groupBy    => Carbon::createFromFormat(($groupBy == 'yearMonth' ? 'Ym' : 'Ymd'), $dateRow[0]),
                 'visitors'  => $dateRow[1],
-                'pageViews' => $dateRow[2]
-            );
+                'pageViews' => $dateRow[2],
+            ];
         }
 
         return $visitorData;
@@ -81,8 +83,9 @@ class Analytics
     /**
      * Get the top keywords.
      *
-     * @param  int $numberOfDays
-     * @param  int $maxResults
+     * @param int $numberOfDays
+     * @param int $maxResults
+     *
      * @return array
      */
     public function getTopKeywords($numberOfDays = 365, $maxResults = 30)
@@ -95,9 +98,10 @@ class Analytics
     /**
      * Get the top keywords for the given period.
      *
-     * @param  \DateTime $startDate
-     * @param  \DateTime $endDate
-     * @param  int $maxResults
+     * @param \DateTime $startDate
+     * @param \DateTime $endDate
+     * @param int       $maxResults
+     *
      * @return array
      */
     public function getTopKeyWordsForPeriod(DateTime $startDate, DateTime $endDate, $maxResults = 30)
@@ -106,25 +110,25 @@ class Analytics
             $startDate,
             $endDate,
             'ga:sessions',
-            array(
-                'dimensions' => 'ga:keyword',
-                'sort' => '-ga:sessions',
+            [
+                'dimensions'  => 'ga:keyword',
+                'sort'        => '-ga:sessions',
                 'max-results' => $maxResults,
-                'filters' => 'ga:keyword!=(not set);ga:keyword!=(not provided)'
-            )
+                'filters'     => 'ga:keyword!=(not set);ga:keyword!=(not provided)',
+            ]
         );
 
         if (is_null($answer->rows)) {
-            return array();
+            return [];
         }
 
-        $keywordData = array();
+        $keywordData = [];
 
         foreach ($answer->rows as $pageRow) {
-            $keywordData[] = array(
-                'keyword' => $pageRow[0],
-                'sessions' => $pageRow[1]
-            );
+            $keywordData[] = [
+                'keyword'  => $pageRow[0],
+                'sessions' => $pageRow[1],
+            ];
         }
 
         return $keywordData;
@@ -133,8 +137,9 @@ class Analytics
     /**
      * Get the top referrers.
      *
-     * @param  int $numberOfDays
-     * @param  int $maxResults
+     * @param int $numberOfDays
+     * @param int $maxResults
+     *
      * @return array
      */
     public function getTopReferrers($numberOfDays = 365, $maxResults = 20)
@@ -147,9 +152,10 @@ class Analytics
     /**
      * Get the top referrers for the given period.
      *
-     * @param  \DateTime $startDate
-     * @param  \DateTime $endDate
-     * @param  int $maxResults
+     * @param \DateTime $startDate
+     * @param \DateTime $endDate
+     * @param int       $maxResults
+     *
      * @return array
      */
     public function getTopReferrersForPeriod(DateTime $startDate, DateTime $endDate, $maxResults)
@@ -158,24 +164,24 @@ class Analytics
             $startDate,
             $endDate,
             'ga:pageviews',
-            array(
-                'dimensions' => 'ga:fullReferrer',
-                'sort' => '-ga:pageviews',
-                'max-results' => $maxResults
-            )
+            [
+                'dimensions'  => 'ga:fullReferrer',
+                'sort'        => '-ga:pageviews',
+                'max-results' => $maxResults,
+            ]
         );
 
         if (is_null($answer->rows)) {
-            return array();
+            return [];
         }
 
-        $referrerData = array();
+        $referrerData = [];
 
         foreach ($answer->rows as $pageRow) {
-            $referrerData[] = array(
-                'url' => $pageRow[0],
-                'pageViews' => $pageRow[1]
-            );
+            $referrerData[] = [
+                'url'       => $pageRow[0],
+                'pageViews' => $pageRow[1],
+            ];
         }
 
         return $referrerData;
@@ -184,8 +190,9 @@ class Analytics
     /**
      * Get the top browsers.
      *
-     * @param  int $numberOfDays
-     * @param  int $maxResults
+     * @param int $numberOfDays
+     * @param int $maxResults
+     *
      * @return array
      */
     public function getTopBrowsers($numberOfDays = 365, $maxResults = 6)
@@ -198,9 +205,10 @@ class Analytics
     /**
      * Get the top browsers for the given period.
      *
-     * @param  \DateTime $startDate
-     * @param  \DateTime $endDate
-     * @param  int $maxResults
+     * @param \DateTime $startDate
+     * @param \DateTime $endDate
+     * @param int       $maxResults
+     *
      * @return array
      */
     public function getTopBrowsersForPeriod(DateTime $startDate, DateTime $endDate, $maxResults)
@@ -209,23 +217,23 @@ class Analytics
             $startDate,
             $endDate,
             'ga:sessions',
-            array(
+            [
                 'dimensions' => 'ga:browser',
-                'sort' => '-ga:sessions'
-            )
+                'sort'       => '-ga:sessions',
+            ]
         );
 
         if (is_null($answer->rows)) {
-            return array();
+            return [];
         }
 
-        $browserData = array();
+        $browserData = [];
 
         foreach ($answer->rows as $browserRow) {
-            $browserData[] = array(
-                'browser' => $browserRow[0],
-                'sessions' => $browserRow[1]
-            );
+            $browserData[] = [
+                'browser'  => $browserRow[0],
+                'sessions' => $browserRow[1],
+            ];
         }
 
         $browserCollection = array_slice($browserData, 0, $maxResults - 1);
@@ -237,10 +245,10 @@ class Analytics
                 return $browser['sessions'];
             }, $otherBrowsers);
 
-            $browserCollection[] = array(
-                'browser' => 'other',
-                'sessions' => array_sum($sessions)
-            );
+            $browserCollection[] = [
+                'browser'  => 'other',
+                'sessions' => array_sum($sessions),
+            ];
         }
 
         return $browserCollection;
@@ -249,8 +257,9 @@ class Analytics
     /**
      * Get the most visited pages.
      *
-     * @param  int $numberOfDays
-     * @param  int $maxResults
+     * @param int $numberOfDays
+     * @param int $maxResults
+     *
      * @return array
      */
     public function getMostVisitedPages($numberOfDays = 365, $maxResults = 20)
@@ -261,28 +270,30 @@ class Analytics
     }
 
     /**
-     * Get the number of active users currently on the site
+     * Get the number of active users currently on the site.
      *
-     * @param  array $others
+     * @param array $others
+     *
      * @return int
      */
-    public function getActiveUsers($others = array())
+    public function getActiveUsers($others = [])
     {
         $answer = $this->performRealTimeQuery('rt:activeUsers', $others);
-    
+
         if (is_null($answer->rows)) {
             return 0;
         }
-        
+
         return $answer->rows[0][0];
     }
-    
+
     /**
      * Get the most visited pages for the given period.
      *
-     * @param  \DateTime $startDate
-     * @param  \DateTime $endDate
-     * @param  int $maxResults
+     * @param \DateTime $startDate
+     * @param \DateTime $endDate
+     * @param int       $maxResults
+     *
      * @return array
      */
     public function getMostVisitedPagesForPeriod(DateTime $startDate, DateTime $endDate, $maxResults = 20)
@@ -291,24 +302,24 @@ class Analytics
             $startDate,
             $endDate,
             'ga:pageviews',
-            array(
-                'dimensions' => 'ga:pagePath',
-                'sort' => '-ga:pageviews',
-                'max-results' => $maxResults
-            )
+            [
+                'dimensions'  => 'ga:pagePath',
+                'sort'        => '-ga:pageviews',
+                'max-results' => $maxResults,
+            ]
         );
 
         if (is_null($answer->rows)) {
-            return array();
+            return [];
         }
 
-        $pagesData = array();
+        $pagesData = [];
 
         foreach ($answer->rows as $pageRow) {
-            $pagesData[] = array(
-                'url' => $pageRow[0],
-                'pageViews' => $pageRow[1]
-            );
+            $pagesData[] = [
+                'url'       => $pageRow[0],
+                'pageViews' => $pageRow[1],
+            ];
         }
 
         return $pagesData;
@@ -317,7 +328,8 @@ class Analytics
     /**
      * Returns the site id (ga:xxxxxxx) for the given url.
      *
-     * @param  string $url
+     * @param string $url
+     *
      * @return string
      */
     public function getSiteIdByUrl($url)
@@ -328,13 +340,14 @@ class Analytics
     /**
      * Call the query method on the authenticated client.
      *
-     * @param  \DateTime $startDate
-     * @param  \DateTime $endDate
-     * @param  string $metrics
-     * @param  array $others
+     * @param \DateTime $startDate
+     * @param \DateTime $endDate
+     * @param string    $metrics
+     * @param array     $others
+     *
      * @return mixed
      */
-    public function performQuery(DateTime $startDate, DateTime $endDate, $metrics, $others = array())
+    public function performQuery(DateTime $startDate, DateTime $endDate, $metrics, $others = [])
     {
         return $this->client->performQuery(
             $this->siteId,
@@ -348,11 +361,12 @@ class Analytics
     /**
      * Call the real time query method on the authenticated client.
      *
-     * @param  string $metrics
-     * @param  array $others
+     * @param string $metrics
+     * @param array  $others
+     *
      * @return mixed
      */
-    public function performRealTimeQuery($metrics, $others = array())
+    public function performRealTimeQuery($metrics, $others = [])
     {
         return $this->client->performRealTimeQuery(
             $this->siteId,
@@ -360,7 +374,7 @@ class Analytics
             $others
         );
     }
-    
+
     /**
      * Return true if this site is configured to use Google Analytics.
      *
@@ -374,7 +388,8 @@ class Analytics
     /**
      * Returns an array with the current date and the date minus the number of days specified.
      *
-     * @param  int $numberOfDays
+     * @param int $numberOfDays
+     *
      * @return array
      */
     protected function calculateNumberOfDays($numberOfDays)
@@ -382,44 +397,43 @@ class Analytics
         $endDate = Carbon::today();
         $startDate = Carbon::today()->subDays($numberOfDays);
 
-        return array(
+        return [
             $startDate,
-            $endDate
-        );
+            $endDate,
+        ];
     }
 
     /**
-     * Create a new instance via a set of parameters
-     * 
-     * @param  string $siteId
-     *         Ex. ga:xxxxxxxx
-     * @param  string $clientId
-     *         Ex. xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com
-     * @param  string $serviceEmail
-     *         Ex. xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@developer.gserviceaccount.com
-     * @param  string $certificatePath
-     *         Ex. /../keys/analytics/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-privatekey.p12
-     * 
-     * @param  \Spatie\Analytics\Cache|null $cache
-     * @param  int $cacheLifetimeInMinutes
-     * @param  int $realTimeCacheLifetime
-     * 
-     * @return \Spatie\Analytics\Analytics
-     * 
+     * Create a new instance via a set of parameters.
+     *
+     * @param string                       $siteId
+     *                                                             Ex. ga:xxxxxxxx
+     * @param string                       $clientId
+     *                                                             Ex. xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com
+     * @param string                       $serviceEmail
+     *                                                             Ex. xxxxxxxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx@developer.gserviceaccount.com
+     * @param string                       $certificatePath
+     *                                                             Ex. /../keys/analytics/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx-privatekey.p12
+     * @param \Spatie\Analytics\Cache|null $cache
+     * @param int                          $cacheLifetimeInMinutes
+     * @param int                          $realTimeCacheLifetime
+     *
      * @throws \Exception
+     *
+     * @return \Spatie\Analytics\Analytics
      */
     public static function create($siteId, $clientId, $serviceEmail, $certificatePath, Cache $cache = null,
         $cacheLifetimeInMinutes = 0, $realTimeCacheLifetime = 0
     ) {
-        if (! file_exists($certificatePath)) {
+        if (!file_exists($certificatePath)) {
             throw new Exception("Can't find the .p12 certificate in: $certificatePath");
         }
 
         $client = new Google_Client(
-            array(
+            [
                 'oauth2_client_id' => $clientId,
                 'use_objects'      => true,
-            )
+            ]
         );
 
         $client->setAccessType('offline');
@@ -427,14 +441,14 @@ class Analytics
         $client->setAssertionCredentials(
             new Google_Auth_AssertionCredentials(
                 $serviceEmail,
-                array('https://www.googleapis.com/auth/analytics.readonly'),
+                ['https://www.googleapis.com/auth/analytics.readonly'],
                 file_get_contents($certificatePath)
             )
         );
 
         $googleApi = new GoogleClient($client, $cache);
 
-        $googleApi        
+        $googleApi
             ->setCacheLifeTimeInMinutes($cacheLifetimeInMinutes)
             ->setRealTimeCacheLifeTimeInMinutes($realTimeCacheLifetime);
 
