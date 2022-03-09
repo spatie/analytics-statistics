@@ -1,3 +1,6 @@
+
+[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/support-ukraine.svg?t=1" />](https://supportukrainenow.org)
+
 # Analytics Statistics: Retrieve data from Google Analytics
 
 [![Latest Version](https://img.shields.io/github/release/spatie/analytics-statistics.svg?style=flat-square)](https://github.com/spatie/analytics-statistics/releases)
